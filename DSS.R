@@ -1,15 +1,10 @@
 
-# Libraries ----
-library("reshape")
-library("dplyr")
-library("matrixStats")
-lapply(c("plotly", "scales", "parallel", "foreach", "gridExtra", "grid", "graphics", "gplots",
+# Libraries 
+lapply(c("matrixStats","dplyr","reshape","reshape2","plotly", "scales", "parallel", "foreach", "gridExtra", "grid", "graphics", "gplots",
          "ggplot2", "raster", "xtable","Rcpp","dplyr"), library, character.only = !0)
 lapply(c("drc", "caTools", "ggplot2", "gsubfn", "gtools", "data.table", "doSNOW","stringr",
          "MESS"), library, character.only = !0)
-# AUC/DSS/EC50 computations (20220711) -----
-#path <- "D:/Aram/Drug screen - clinical forecasting"
-#df_dose.responses <- read.csv(paste0(path,"/Dose response data.csv") )
+# DSS1/DSS2/DSS3/AUC/DSS/EC50 computations  
 
 #Raw AUC functions
 Log10.AUC <- function(conc, resp){
