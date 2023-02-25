@@ -1,11 +1,11 @@
 ###DSS 2.0, sDSS/zDSS/rDSS computations
 ###set up
 #Install required libraries
-list.of.packages <- c("plotly", "scales", "parallel", "foreach", "gridExtra", "grid", "graphics", "gplots",
+packages.required <- c("plotly", "scales", "parallel", "foreach", "gridExtra", "grid", "graphics", "gplots",
          "ggplot2", "raster", "xtable","Rcpp","dplyr", "drc", "caTools", "gsubfn", "gtools", "data.table", "doSNOW","stringr",
          "MESS", "reshape", "reshape2", "matrixStats")
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
+packages.new <- packages.required[!(packages.required %in% installed.packages()[,"Package"])]
+if(length(packages.new)) install.packages(packages.new)
 
 
 rm(list = ls())
