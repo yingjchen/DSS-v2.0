@@ -88,7 +88,7 @@ dss<-function(ic50,slope,max,min.conc.tested,max.conc.tested,y=10,DSS.type=2,con
   return (dss)
 }
 
-CALC_IC50_EC50_DSS <- compiler::cmpfun(function(i, drug_wells_, xpr_tbl, DSS_typ, readoutCTX = F, path){
+CALC_IC50_EC50_DSS <- compiler::cmpfun(function(i, drug_wells_, xpr_tbl, DSS_typ, readoutCTX = F, path = ""){
   
   tryCatch({
     #gc(T);
