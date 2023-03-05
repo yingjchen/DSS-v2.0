@@ -8,7 +8,7 @@ packages.new <- packages.required[!(packages.required %in% installed.packages()[
 if(length(packages.new)) install.packages(packages.new)
 
 ##load the packages
-lapply(packages.required), library, character.only = !0)
+lapply(packages.required, library, character.only = !0)
 
 
 rm(list = ls())
