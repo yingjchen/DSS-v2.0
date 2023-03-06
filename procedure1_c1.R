@@ -46,7 +46,7 @@ for(it in 1:iter){
   list.DSS_metrics[[it]] <- data.frame(AUC=df.DSS.ctx[[1]]$AUC,DSS1=df.DSS.ctx[[5]],
                                        DSS2=df.DSS.ctx[[6]],DSS3=df.DSS.ctx[[7]])
   list.IC50[[it]] <- data.frame(IC50=df.DSS.ctx[[8]])
-  rm( df.DSS.ctx)
+  rm( df.DSS.ctx) # NO NEED TO REMOVE HERE, IT SHOULD BE REMOVED BY GC
   svMisc::progress(it/iter*100)
 }
 
