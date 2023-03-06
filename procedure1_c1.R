@@ -11,8 +11,8 @@ if(length(packages.new)) install.packages(packages.new)
 lapply(packages.required, library, character.only = !0)
 
 
-rm(list = ls())
-setwd('D:/AML/DSS/')
+rm(list = ls()) # REMOVE IT, WHAT IF PEOPLE HAVE SOME IMPORTANT OBJECT IN THE ENV?
+setwd('D:/AML/DSS/') # ALSO THIS ONE
 
 #url_to_dsscalc <- 'https://github.com/xxx' 
 #source(url_to_dsscalc)
