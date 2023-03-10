@@ -1,7 +1,8 @@
 ###DSS 2.0, sDSS/zDSS/rDSS computations
 ###set up
 ##Install required libraries
-packages.required <- c("plotly", "scales", "parallel", "foreach", "gridExtra", "grid", "graphics", "gplots", "ggplot2",  "xtable","Rcpp","dplyr", "drc", "caTools", "gsubfn", "gtools", "data.table", "MESS", "reshape", "reshape2", "matrixStats", "egg", "pheatmap",  "svMisc", "BiocManager")
+packages.required <- packages.required <- c("matrixStats","dplyr","reshape","reshape2", "scales", "drc", "caTools", "ggplot2", "data.table", 
+                                            "stringr","MESS", "BiocManager","svMisc", "egg", "pheatmap")
 packages.bio <- c("sva", "pcaMethods")
 packages.new <- packages.required[!(packages.required %in% installed.packages()[,"Package"])]
 if(length(packages.new)) install.packages(packages.new)
@@ -30,14 +31,10 @@ source('./HelperFunctions.R')
 path_to_exampledata <- './exampleData_procedure1.csv'
 df_dose.responses <- read.csv(path_to_exampledata, header = T,sep = ",",check.names = F)
 
-df_dose.responses <- DOSE_RESPONSE_PROCESS(df_dose.responses, viability = TRUE)
-df_dose.responses.grouped <- df_dose.responses %>% 
-  group_by(ID, Patient.num, drug) %>% 
-  summarise(conc = max(Concentration)) %>%
-  as.data.frame()
+df_dose.responses.list <- DOSE_RESPONSE_PROCESS(df_dose.responses, viability = T)
 
 ##compute BREEZE drug sensitivity metrics, i.e. DSS1, DSS2, DSS3, Breeze AUC and relative IC50
-df.metrics <- CALC_METRICS(df_dose.responses,df_dose.responses.grouped)
+df.metrics <- CALC_METRICS(df_dose.responses.list[[1]], df_dose.responses.list[[2]])
 
 ##here we select DSS2 as patient DSS
 patients.dss <- as.data.frame(acast(df.metrics,df.metrics$Patient.num ~ df.metrics$drug , value.var  = 'DSS2'))
