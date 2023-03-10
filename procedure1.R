@@ -36,7 +36,7 @@ df_dose.responses.grouped <- df_dose.responses %>%
   summarise(conc = max(Concentration)) %>%
   as.data.frame()
 
-##compute BREEZE drug sensitivity metrics
+##compute BREEZE drug sensitivity metrics, i.e. DSS1, DSS2, DSS3, Breeze AUC and relative IC50
 df.metrics <- CALC_METRICS(df_dose.responses,df_dose.responses.grouped)
 
 ##here we select DSS2 as patient DSS
