@@ -6,19 +6,6 @@ lapply(c("drc", "caTools", "ggplot2", "gsubfn", "gtools", "data.table", "stringr
          "MESS"), library, character.only = !0)
 # DSS1/DSS2/DSS3/AUC/DSS/EC50 computations  
 
-#Raw AUC functions
-Log10.AUC <- function(conc, resp){
-  resp = resp[order(conc)]
-  conc = conc[order(conc)]
-  conc = log10(conc)
-  
-  A = 0
-  for(j in 2:length(conc)){
-    a <- (resp[j]) *(conc[j]-conc[j-1])/(max(conc)-min(conc))
-    A = A + a
-    rm(a,j)
-  }
-  A
 }
 
 #DSS/EC50 functions adapted from BREEZE (https://github.com/potdarswapnil/Breeze)
