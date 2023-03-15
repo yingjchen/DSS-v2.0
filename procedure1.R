@@ -44,7 +44,7 @@ patients.dss <- as.data.frame(acast(df.metrics,df.metrics$Patient.num ~ df.metri
 
 
 ###2. load DSS data of 10 FIMM controls (FO5A plate)
-path_to_controldss <- './exampledata/github repo/File_1_Drugname_response_DSS_10Healthy.txt'
+path_to_controldss <- './controls/File_1_Drugname_response_DSS_10Healthy.txt'
 controls.dss <- read.csv(path_to_controldss, header = T, sep = '\t', row.names = 1,stringsAsFactors = F, check.names = F)
 
 ##compute mean, SD, median and MAD of control DSSs
