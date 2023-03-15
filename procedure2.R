@@ -1,4 +1,20 @@
-#code for Procedure 2
+#R-codes for Procedure 2
+
+##Install required libraries
+packages.required <- packages.required <- c("matrixStats","dplyr","reshape","reshape2", "scales", "drc", "caTools", "ggplot2", "data.table", 
+                                            "stringr","MESS", "BiocManager","svMisc", "egg", "pheatmap")
+packages.bio <- c("sva", "pcaMethods")
+packages.new <- packages.required[!(packages.required %in% installed.packages()[,"Package"])]
+if(length(packages.new)) install.packages(packages.new)
+if (!requireNamespace(packages.bio, quietly = TRUE))
+    BiocManager::install(packages.bio)
+
+
+##load the packages
+lapply(packages.required, library, character.only = T)
+lapply(packages.bio, library, character.only = T)
+
+
 path_to_exampledata <- './exampledata_procedure2.csv'
 df.dss <- read.csv(path_to_exampledata, header = T,sep = ",",  row.names = 1, check.names = F)
 # make PPCA plot
