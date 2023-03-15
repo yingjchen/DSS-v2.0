@@ -3,7 +3,7 @@ DSS-v2.0 is a new pipeline to better quantify selective drug responses between c
 
 
 # Instructions
-R version 3.4? or newer is required.
+R version 3.5.1 or newer is required.
 
 The example data and R scripts can be downloaded:
 ```
