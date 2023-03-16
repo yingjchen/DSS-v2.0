@@ -35,7 +35,7 @@ df_dose.responses <- read.csv('./exampleData_procedure1.csv', header = T,sep = "
 head(df_dose.responses)
 ```
 
-    ##    DRUG_NAME CONCENTRATION SCREEN_NAME    CELL_VIABILITY
+    ##    DRUG_NAME CONCENTRATION_nM SCREEN_NAME    CELL_VIABILITY
     ## 1 Nelarabine         10000  AML_013_01            0.3012
     ## 2 Nelarabine          1000  AML_013_01            0.5565
     ## 3 Nelarabine           100  AML_013_01            0.7578
