@@ -16,6 +16,7 @@ cd ./DSS-v2.0
 # start the R program
 R
 ```
+
 # Start by loading libraries and functions
 ```r
 lapply(c("matrixStats","dplyr","reshape","reshape2", "scales", "drc", "caTools","ggplot2", "data.table", "stringr","MESS", "BiocManager","svMisc", "egg", "pheatmap", "sva", "pcaMethods"), library, character.only = T)
@@ -79,3 +80,6 @@ patients.zdss <- (patients.dss - slice(controls.summary['mean', colnames(patient
 
 patients.rdss <- (patients.dss - slice(controls.summary['median', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss))))/(slice(controls.summary['mad', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss))) + 1)
 ```
+
+# Batch effect correction example
+xxx
