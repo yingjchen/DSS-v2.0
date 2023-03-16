@@ -15,7 +15,7 @@ lapply(packages.required, library, character.only = T)
 lapply(packages.bio, library, character.only = T)
 
 
-path_to_exampledata <- './exampledata_procedure2.csv'
+path_to_exampledata <- './exampleData_procedure2.csv'
 df.dss <- read.csv(path_to_exampledata, header = T,sep = ",",  row.names = 1, check.names = F)
 # make PPCA plot
 df.dss.1 <- df.dss[, 1 : (ncol(df.dss) - 3)]
