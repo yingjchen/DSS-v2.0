@@ -86,4 +86,44 @@ patients.rdss <- (patients.dss - slice(controls.summary['median', colnames(patie
 ```
 
 # Batch effect correction example
-xxx
+To combine drug response profiles from multiple sources, we apply the ComBat algorithm to adjust for the known batch effects. 
+
+```r
+# load the example data: DSS2 proiles for 147 BeatAML samples, 125 FIMM-AML samples and 10 healthy controls. 
+df.dss <- read.csv('./exampledata_procedure2.csv', header = T,sep = ",",  row.names = 1, check.names = F)
+```
+One can visualize a Probabilistic PCA (PPCA) plot showing 
+the batch effects due to the presence of missing data.
+```r
+df.dss.1 <- df.dss[, 1 : (ncol(df.dss) - 3)]
+res_ppca <- pca(data.matrix(df.dss.1), method = 'ppca', nPcs = 2, seed = 1)
+score_ppca <-  as.data.frame(scores(res_ppca))
+score_ppca$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
+
+ggplot(score_ppca, aes(x = PC1, y = PC2, color = group)) +
+  geom_point() + labs(title = "DSS",  x = "PC1", y = "PC2") +
+  theme_classic()
+```
+
+![](./images/example_DSS_ppca_test1403.png)
+
+
+Given the differences between two cohorts, let's use the ComBat function from SVA package to correct the batch effects.
+```r
+df.dss.combat <- ComBat(dat = t(df.dss.1), batch = as.factor(df.dss$cohort), mod = NULL, par.prior = F, prior.plots = F)
+````
+
+PPCA of ComBat-corrected DSS profiles
+```r
+res_ppca_combat <- pca(data.matrix(t(df.dss.combat)), method = 'ppca', nPcs = 2, seed = 1)
+score_ppca_combat <-  as.data.frame(scores(res_ppca_combat))
+score_ppca_combat$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
+
+ggplot(score_ppca_combat, aes(x = PC1, y = PC2, color = group)) +
+  geom_point() + labs(title = "ComBat DSS",  x = "PC1", y = "PC2") +
+  theme_classic()
+```
+![](./images/example_ComBatDSS_ppca_test1403.png)
+
+# Contact information
+For any questions please contact **Yingjia Chen** (yingjia.chen@helsinki.fi)
