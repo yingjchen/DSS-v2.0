@@ -43,7 +43,9 @@ ggplot(score_ppca, aes(x = PC1, y = PC2, color = group)) +
 ggsave("./example_DSS_ppca.pdf", height = 10, width = 10)
 
 ##perform ComBat correction  
+start.time <- Sys.time()
 df.dss.combat <- ComBat(dat = t(df.dss.1), batch = as.factor(df.dss$cohort), mod = NULL, par.prior = F, prior.plots = F)
+message("Finished ComBat correction in ", round(Sys.time() - start.time, 2), units(Sys.time() - start.time))
 
 ##make PPCA plot of ComBat DSS
 res_ppca_combat <- pca(data.matrix(t(df.dss.combat)), method = 'ppca', nPcs = 2, seed = 1)
