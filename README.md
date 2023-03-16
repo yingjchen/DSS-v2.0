@@ -5,6 +5,15 @@ DSS-v2.0 is a new pipeline to better quantify selective drug responses between c
 # Instructions
 R version 3.5.1 or newer is required.
 
+The way to install packages 'sva' and 'pcaMethods' in Bioconductor differs from other packages in R:
+```r
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+if (!requireNamespace(c("sva", "pcaMethods"), quietly = TRUE))
+    BiocManager::install(c("sva", "pcaMethods"))
+```
+
 # Under Linux/Unix
 ```
 # download the example data and R scripts
