@@ -66,6 +66,7 @@ rownames(controls.summary ) <- c('mean', 'sd', 'median', 'mad')
 
 # let's set DSS2 as the drug response metrics of patient samples (as an example)
 patients.dss <- as.data.frame(acast(df.metrics,df.metrics$Patient.num ~ df.metrics$drug , value.var  = 'DSS2'))
+
 patients.dss[, 1:3]
 ```
     ##                    1-methyl-D-tryptophan 4-hydroxytamoxifen 8-amino-adenosine
@@ -74,10 +75,13 @@ patients.dss[, 1:3]
     ## AML_013_01                     0                4.3              23.9
 ```r
 # normalize and scale patient-specific responses to drugs with control DSS profiles
+# patient sDSS
 patients.sdss <- patients.dss - slice(controls.summary['mean', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss)))
 
+# patient zDSS
 patients.zdss <- (patients.dss - slice(controls.summary['mean', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss))))/(slice(controls.summary['sd', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss))) + 1)
 
+# patient rDSS
 patients.rdss <- (patients.dss - slice(controls.summary['median', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss))))/(slice(controls.summary['mad', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss))) + 1)
 ```
 
