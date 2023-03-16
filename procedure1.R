@@ -31,6 +31,7 @@ source('./HelperFunctions.R')
 path_to_exampledata <- './exampleData_procedure1.csv'
 df_dose.responses <- read.csv(path_to_exampledata, header = T,sep = ",",check.names = F)
 
+#set the viability argument to ‘FALSE’ if input data is cell growth inhibition data
 df_dose.responses.list <- DOSE_RESPONSE_PROCESS(df_dose.responses, viability = T)
 
 ##compute BREEZE drug sensitivity metrics, i.e. DSS1, DSS2, DSS3, Breeze AUC and relative IC50
