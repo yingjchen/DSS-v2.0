@@ -19,6 +19,7 @@ DOSE_RESPONSE_PROCESS <- function(dose_responses, viability = T){
 
 
 CALC_METRICS <- function(dose_responses, dose_responses_grouped){
+  start.time <- Sys.time()
   iter <- nrow(dose_responses_grouped)
   list.AUC_DSS <- list()
   list.believe <- list()
@@ -36,12 +37,15 @@ CALC_METRICS <- function(dose_responses, dose_responses_grouped){
   list.AUC_DSS <- bind_rows(list.AUC_DSS)
   df.IC50_metrics <- bind_rows(list.IC50)
   df.metric <- cbind( dose_responses_grouped, list.AUC_DSS, df.IC50_metrics, df.believe)
+  message("Finished DSS computations in ", round(Sys.time() - start.time, 2), units(Sys.time() - start.time))
   return(df.metric)
+  
 }
 
 
 
 DRUG_FILTER_SYNONYMS <- function(inputdrug, druglibrary){
+  start.time <- Sys.time()
   drug_names <- toupper(colnames(inputdrug))
   inputdrug.map <- inputdrug
   
@@ -53,16 +57,15 @@ DRUG_FILTER_SYNONYMS <- function(inputdrug, druglibrary){
   
   inputdrug <- inputdrug[, !(is.na(inputdrug.map['drugname',]))]
   colnames(inputdrug) <- inputdrug.map['drugname',]
+  message("Finished drug mapping in ", round(Sys.time() - start.time, 2), units(Sys.time() - start.time),  paste(', ' ,as.character(ncol(patients.dss)), 'drugs in our compound library') )
   return(inputdrug)
 }
 
 
 
-
 SAMPLE_DSS_CONCAT <- function(sample_id){
   sample_dss<- data.frame(DSS = as.numeric(patients.dss[sample_id, ]), sDSS = as.numeric(patients.sdss[sample_id, ]), zDSS = as.numeric(patients.zdss[sample_id,]), row.names = colnames(patients.dss) )
-  
-  
+
   sample_dss$drugclass <- unlist(lapply(rownames(sample_dss), function(d_){ 
     as.character(df_drug.library[df_drug.library$drug == as.character(d_), 'drugclass'])
   }))
