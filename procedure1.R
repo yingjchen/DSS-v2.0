@@ -14,7 +14,7 @@ if (!requireNamespace(packages.bio, quietly = TRUE))
 lapply(packages.required, library, character.only = T)
 lapply(packages.bio, library, character.only = T)
 
-
+##the working directory needs to be changed
 path_to_working_directory <- '/path/to/working/directory/'
 setwd(dir = path_to_working_directory)
 
