@@ -105,7 +105,7 @@ ggplot(score_ppca, aes(x = PC1, y = PC2, color = group)) +
   theme_classic()
 ```
 
-![](./images/example_DSS_ppca_test1403.png)
+![](./images/example_DSS_ppca.png)
 
 
 Given the differences between two cohorts, let's use the ComBat function from SVA package to correct the batch effects.
@@ -123,7 +123,7 @@ ggplot(score_ppca_combat, aes(x = PC1, y = PC2, color = group)) +
   geom_point() + labs(title = "ComBat DSS",  x = "PC1", y = "PC2") +
   theme_classic()
 ```
-![](./images/example_ComBatDSS_ppca_test1403.png)
+![](./images/example_ComBatDSS_ppca.png)
 
 # Contact information
 For any questions please contact **Yingjia Chen** (yingjia.chen@helsinki.fi)
