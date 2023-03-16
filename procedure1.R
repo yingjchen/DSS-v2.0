@@ -84,11 +84,11 @@ write.table(patients.rdss, file = './Results_exampledata_rDSS_procedure1.txt',se
 sample_id <- 'AML_013_01'
 sample_dss <- SAMPLE_DSS_CONCAT(sample_id = sample_id)
 p1 <- ggplot(sample_dss) +  
-  geom_histogram(aes( y = after_stat(density), fill= drugclass, x = DSS), color = "black", alpha = .6, position="identity", show.legend = T) +
+  geom_histogram(aes(x = DSS, y = after_stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
   labs(title = sample_id,  x="DSS", y = "Density") + theme_classic()
 p2 <- ggplot(sample_dss, aes(y = drugclass, x = DSS, fill= drugclass)) +
-  geom_boxplot(aes(y = drugclass, x = DSS, fill = drugclass), outlier.shape = NA, alpha = .6,  colour = "black", show.legend = F) +
+  geom_boxplot(aes(x = drugclass, y = DSS, fill = drugclass), outlier.shape = NA, alpha = .6,  colour = "black", show.legend = F) +
   geom_jitter(aes(color = drugclass), size = 3, alpha = .8,  show.legend = F)+
-  theme_classic() 
+  theme_classic() + coord_flip()
 p3 <- ggarrange(p1, p2, nrow = 2)
 ggsave("./example_DSS_distribution.pdf", p3, height = 10,width = 10)
