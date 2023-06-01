@@ -63,11 +63,100 @@ DRUG_FILTER_SYNONYMS <- function(inputdrug, druglibrary){
 
 
 
-SAMPLE_DSS_CONCAT <- function(sample_id){
-  sample_dss<- data.frame(DSS = as.numeric(patients.dss[sample_id, ]), sDSS = as.numeric(patients.sdss[sample_id, ]), zDSS = as.numeric(patients.zdss[sample_id,]), row.names = colnames(patients.dss) )
+SAMPLE_DSS_CONCAT <- function(df.dss, df.sdss, df.zdss, df.rdss, sample_id){
+  sample_dss<- data.frame(DSS = as.numeric(df.dss[sample_id, ]), sDSS = as.numeric(df.sdss[sample_id, ]), zDSS = as.numeric(df.zdss[sample_id,]), rDSS = as.numeric(df.rdss[sample_id,]), row.names = colnames(df.dss) )
 
   sample_dss$drugclass <- unlist(lapply(rownames(sample_dss), function(d_){ 
     as.character(df_drug.library[df_drug.library$drug == as.character(d_), 'drugclass'])
   }))
   return(sample_dss)
 }
+
+
+HEATMAP_SD <- function(df, proportion){
+  drug_variable <- order(-colSds(as.matrix(df)))[1 : ceiling(ncol(df)*proportion)]
+  p0 <- pheatmap(df[, drug_variable],  show_colnames = T, show_rownames = T,  clustering_distance_cols = "minkowski")
+  ggsave(paste("./example_Breeze_DSS_", ceiling(ncol(df)*proportion), "drugs_heatmap.pdf", sep = ''), p0, height = 10,width = 10)
+  message("Finished heatmap for DSS of ", ceiling(ncol(df)*proportion), " most variable drugs across ", nrow(df)," AML patient samples")
+
+}
+
+
+CHEMO_TAREGTED_PLOT <- function(df, metric){
+  if (metric == 'DSS'){
+    p1 <- ggplot(df) +  
+      geom_histogram(aes(x = DSS, y = after_stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
+      labs(title = sample_id,  x="DSS", y = "Density") + theme_classic()
+    p2 <- ggplot(sample_dss, aes(x = drugclass, y = DSS, fill= drugclass)) +
+      geom_boxplot(aes(x = drugclass, y = DSS, fill = drugclass), outlier.shape = NA, alpha = .6,  colour = "black", show.legend = F) +
+      geom_jitter(aes(color = drugclass), size = 3, alpha = .8,  show.legend = F)+
+      theme_classic() + coord_flip()
+    p3 <- ggarrange(p1, p2, nrow = 2)
+    ggsave("./example_DSS_distribution.pdf", p3, height = 10, width = 10)
+    message("Finished data distribution plots of DSS in chemo and targeted drugs")
+    
+  }else if (metric == 'sDSS'){
+    p1 <- ggplot(df) +  
+      geom_histogram(aes(x = sDSS, y = after_stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
+      labs(title = sample_id,  x="sDSS", y = "Density") + theme_classic()
+    p2 <- ggplot(sample_dss, aes(x = drugclass, y = sDSS, fill= drugclass)) +
+      geom_boxplot(aes(x = drugclass, y = sDSS, fill = drugclass), outlier.shape = NA, alpha = .6,  colour = "black", show.legend = F) +
+      geom_jitter(aes(color = drugclass), size = 3, alpha = .8,  show.legend = F)+
+      theme_classic() + coord_flip()
+    p3 <- ggarrange(p1, p2, nrow = 2)
+    ggsave("./example_sDSS_distribution.pdf", p3, height = 10, width = 10)
+    message("Finished data distribution plots of sDSS in chemo and targeted drugs")
+    
+  }else if (metric == 'zDSS'){
+    p1 <- ggplot(df) +  
+      geom_histogram(aes(x = zDSS, y = after_stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
+      labs(title = sample_id,  x="zDSS", y = "Density") + theme_classic()
+    p2 <- ggplot(sample_dss, aes(x = drugclass, y = zDSS, fill= drugclass)) +
+      geom_boxplot(aes(x = drugclass, y = zDSS, fill = drugclass), outlier.shape = NA, alpha = .6,  colour = "black", show.legend = F) +
+      geom_jitter(aes(color = drugclass), size = 3, alpha = .8,  show.legend = F)+
+      theme_classic() + coord_flip()
+    p3 <- ggarrange(p1, p2, nrow = 2)
+    ggsave("./example_zDSS_distribution.pdf", p3, height = 10, width = 10)
+    message("Finished data distribution plots of zDSS in chemo and targeted drugs")
+    
+  }else if (metric == 'rDSS'){
+    p1 <- ggplot(df) +  
+      geom_histogram(aes(x = rDSS, y = after_stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
+      labs(title = sample_id,  x="rDSS", y = "Density") + theme_classic()
+    p2 <- ggplot(sample_dss, aes(x = drugclass, y = rDSS, fill= drugclass)) +
+      geom_boxplot(aes(x = drugclass, y = rDSS, fill = drugclass), outlier.shape = NA, alpha = .6,  colour = "black", show.legend = F) +
+      geom_jitter(aes(color = drugclass), size = 3, alpha = .8,  show.legend = F)+
+      theme_classic() + coord_flip()
+    p3 <- ggarrange(p1, p2, nrow = 2)
+    ggsave("./example_rDSS_distribution.pdf", p3, height = 10, width = 10)
+    message("Finished data distribution plots of rDSS in chemo and targeted drugs")
+  }else{
+    message("Error: argument metric shoud be one of 'DSS', 'sDSS', 'zDSS', 'rDSS'")
+  }
+}
+
+SELECTIVE_SCORE_PLOT <- function(df){
+  df_new <- data.frame(score = c(df$DSS, df$sDSS, df$zDSS, df$rDSS ), class = factor(rep(c('DSS', 'sDSS','zDSS', 'rDSS' ), c(nrow(df), nrow(df), nrow(df), nrow(df))), levels = c('DSS', 'sDSS','zDSS', 'rDSS' )))
+  p1 <- ggplot(df_new) + 
+    geom_density(aes(x = score, fill = class), alpha = 0.3, lwd = 1, bw = 2,  show.legend = T) +
+    labs(title = sample_id,  x="", y = "Density") + theme_classic()
+  ggsave("./example_scores_distribution.pdf", p1, height = 10, width = 10)
+  message("Finished data distribution plots of DSS, sDSS, zDSS and rDSS in one sample")
+}
+
+
+  
+PCA_FUNC <- function(df){
+  if (sum(is.na(df)) > 0){
+    res_pca <- pca(data.matrix(df), method = 'ppca', nPcs = 2, seed = 1,scale = NULL, center = TRUE)
+    score_pca <-  as.data.frame(scores(res_pca))
+    message(round(sum(is.na(df))/ (0.01 *nrow(df) * ncol(df)), 2), "% missing values exist, using PPCA analysis")
+  } else{
+    res_pca <- prcomp(data.matrix(df), scale = FALSE, center = TRUE)
+    score_pca <-  as.data.frame(res_pca$x[, c('PC1', 'PC2')])
+    message("No missing values exist, using PCA analysis")
+  }
+  colnames(score_pca) <- c('PC1', 'PC2')
+  return(score_pca)
+}
+
