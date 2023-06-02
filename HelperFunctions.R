@@ -74,6 +74,7 @@ SAMPLE_DSS_CONCAT <- function(df.dss, df.sdss, df.zdss, df.rdss, sample_id){
 
 
 HEATMAP_SD <- function(df, proportion){
+  #remember to add the situations where there is only one sample 02.06.2023
   drug_variable <- order(-colSds(as.matrix(df)))[1 : ceiling(ncol(df)*proportion)]
   p0 <- pheatmap(df[, drug_variable],  show_colnames = T, show_rownames = T,  clustering_distance_cols = "minkowski")
   ggsave(paste("./example_Breeze_DSS_", ceiling(ncol(df)*proportion), "drugs_heatmap.pdf", sep = ''), p0, height = 10,width = 10)
