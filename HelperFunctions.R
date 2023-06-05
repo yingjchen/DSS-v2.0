@@ -18,14 +18,14 @@ DOSE_RESPONSE_PROCESS <- function(dose_responses, viability = T){
 
 
 
-CALC_METRICS <- function(dose_responses, dose_responses_grouped){
+CALC_METRICS <- function(dose_responses, dose_responses_grouped, graph = F){
   start.time <- Sys.time()
   iter <- nrow(dose_responses_grouped)
   list.AUC_DSS <- list()
   list.believe <- list()
   list.IC50 <- list()
   for(it in 1:iter){
-    df.DSS.ctx <- CALC_IC50_EC50_DSS(it, dose_responses_grouped, dose_responses, DSS_typ = '2')
+    df.DSS.ctx <- CALC_IC50_EC50_DSS(it, dose_responses_grouped, dose_responses, DSS_typ = '2', graph = graph)
     list.believe[[it]] <- data.frame(believe_DSS = df.DSS.ctx[[3]])
     list.AUC_DSS[[it]] <- data.frame(AUC = df.DSS.ctx[[1]]$AUC,DSS1 = df.DSS.ctx[[5]],
                                      DSS2 = df.DSS.ctx[[6]],DSS3 = df.DSS.ctx[[7]])
