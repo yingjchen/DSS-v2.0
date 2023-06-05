@@ -73,13 +73,24 @@ SAMPLE_DSS_CONCAT <- function(df.dss, df.sdss, df.zdss, df.rdss, sample_id){
 }
 
 
-HEATMAP_SD <- function(df, proportion){
-  #remember to add the situations where there is only one sample 02.06.2023
-  drug_variable <- order(-colSds(as.matrix(df)))[1 : ceiling(ncol(df)*proportion)]
-  p0 <- pheatmap(df[, drug_variable],  show_colnames = T, show_rownames = T,  clustering_distance_cols = "minkowski")
-  ggsave(paste("./example_Breeze_DSS_", ceiling(ncol(df)*proportion), "drugs_heatmap.pdf", sep = ''), p0, height = 10,width = 10)
-  message("Finished heatmap for DSS of ", ceiling(ncol(df)*proportion), " most variable drugs across ", nrow(df)," AML patient samples")
-
+HEATMAP_SD <- function(df, proportion = 1){
+  if (dim(df)[1] > 1 & dim(df)[2] > 1){
+    # we need at least two rows/columns for clustering
+    drug_variable <- order(-colSds(as.matrix(df)))[1 : ceiling(ncol(df)*proportion)]
+    p0 <- pheatmap(df[, drug_variable],  show_colnames = T, show_rownames = T,  clustering_distance_cols = "minkowski")
+    ggsave(paste("./example_Breeze_DSS_", ceiling(ncol(df)*proportion), "drugs_heatmap.pdf", sep = ''), p0, height = 10,width = 10)
+    message("Finished heatmap for DSS of ", ceiling(ncol(df)*proportion), " most variable drugs across ", nrow(df)," samples")
+  }else {
+    #barplot of all the compounds or samples, if there is one compound or one sample
+    if (dim(df)[1] == 1) df <- as.data.frame(t(df))
+    df_order <-  data.frame(DSS = df[ order(as.matrix(df), decreasing=F)], ID = row.names(df)[order(as.matrix(df), decreasing=F)])
+    
+    
+    p0 <- ggplot(df_order) + geom_bar(aes(y = DSS, x = ID, fill = 'red'), stat = "identity", show.legend = F)  +
+      labs(title = "",  x = "", y = "DSS") + scale_x_discrete(limits = df_order$ID) + theme_classic()
+    ggsave("./example_Breeze_DSS_barplot.pdf", p0, height = 10, width = 10) 
+    message("Finished bar plot for DSS of ", nrow(df), " drugs across ", ncol(df)," samples")
+  }
 }
 
 
