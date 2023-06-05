@@ -73,7 +73,7 @@ dss<-function(ic50,slope,max,min.conc.tested,max.conc.tested,y=10,DSS.type=2,con
   return (dss)
 }
 
-CALC_IC50_EC50_DSS <- compiler::cmpfun(function(i, drug_wells_, xpr_tbl, DSS_typ, readoutCTX = F, path = ""){
+CALC_IC50_EC50_DSS <- compiler::cmpfun(function(i, drug_wells_, xpr_tbl, DSS_typ, readoutCTX = F, path = "", graph){
   
   tryCatch({
     #gc(T);
@@ -322,6 +322,31 @@ CALC_IC50_EC50_DSS <- compiler::cmpfun(function(i, drug_wells_, xpr_tbl, DSS_typ
       if(all(yicIC50ABS < 50)) coef_ic50ABS= Inf else coef_ic50ABS = 10**xIC50ABS[which.min(abs(yicIC50ABS - 50))]
       ####
       
+      if (graph){
+        #plot IC50
+        mat_tbl$inhibition = xpr_tbl$inhibition_percent[idx_filt]; # if we have all values < 0, they will be replaced
+        mat_tbl$viability = 100 - mat_tbl$inhibition;  # we are replacing them back here.
+        icpl <- ggplot2::ggplot(mat_tbl, aes(logconc, inhibition2)) + scale_x_continuous(breaks=mat_tbl$logconc,labels=mat_tbl$dose) +
+          geom_point(color = "blue", size = 2.8) + geom_line(data = data.frame(x = x, y = yic), aes(x, yic), color="blue", size = 0.8) +
+          geom_vline(xintercept = log10(coef_ic50["IC50"]), colour="grey", size = 0.8) + ggtitle(paste0(strtrim(drug_name, 13)," (dss:",dss_score,")\n"))+
+          theme_bw() + labs(y = "% inhibition", x = "conc(nM)")  +  ylim(-25, 125) +
+          geom_text(mapping=aes(x2,y2,label = text2), data=data.frame(x2=log10(coef_ic50["IC50"])*0.95, y2=115, text2="IC50"), color="grey", parse=T) +
+          theme(plot.background = element_rect(fill = "transparent",colour = NA),
+                panel.background =element_rect(fill = "transparent",colour = NA), plot.title = element_text(hjust = 0.5, size = 12.5))
+        
+        
+        
+        graphics.off()
+        filename_ = file.path( "IC50", paste0(product_id,"_IC50_curve_drug.png"))
+        png(filename = filename_, width=190,  height=190) #,  bg = "transparent"
+        print(icpl)
+        dev.off()
+        # plot IC50
+      } else {
+        unlink("./IC50", recursive = T) 
+      }
+                  
+      
       #dataframe for IC50
       IC50_dataframe <- data.frame(ID=product_id,DRUG_NAME=drug_name,ANALYSIS_NAME="IC50", t(as.matrix(coef_ic50)), perInh,
                                    GRAPH=NA, DSS = as.numeric(dss_score), sDSS = "", SE_of_estimate = as.numeric(ic50std_resid),AUC=auc)
@@ -333,24 +358,11 @@ CALC_IC50_EC50_DSS <- compiler::cmpfun(function(i, drug_wells_, xpr_tbl, DSS_typ
       numeric_cols <- sapply(IC50_dataframe, is.numeric); IC50_dataframe[,numeric_cols] <- round(IC50_dataframe[,numeric_cols],1)
       numeric_cols <- sapply(TEC50_dataframe, is.numeric); TEC50_dataframe[,numeric_cols] <- round(TEC50_dataframe[,numeric_cols],1)
       
-      # plot IC50
-      #mat_tbl$inhibition = xpr_tbl$inhibition_percent[idx_filt]; # if we have all values < 0, they will be replaced
-      #mat_tbl$viability = 100 - mat_tbl$inhibition;  # we are replacing them back here.
-      # icpl <- ggplot2::ggplot(mat_tbl, aes(logconc, inhibition2)) + scale_x_continuous(breaks=mat_tbl$logconc,labels=mat_tbl$dose) +
-      #   geom_point(color = "blue", size = 2.8) + geom_line(data = data.frame(x = x, y = yic), aes(x, yic), color="blue", size = 0.8) +
-      #   geom_vline(xintercept = log10(coef_ic50["IC50"]), colour="grey", size = 0.8) + ggtitle(paste0(strtrim(drug_name, 15)," (dss:",dss_score,")\n"))+
-      #   theme_bw() + labs(y = "% inhibition", x = "conc(nM)")  +  ylim(-25, 125) +
-      #   geom_text(mapping=aes(x2,y2,label = text2), data=data.frame(x2=log10(coef_ic50["IC50"])*0.95, y2=115, text2="IC50"), color="grey", parse=T) +
-      #   theme(plot.background = element_rect(fill = "transparent",colour = NA),
-      #         panel.background =element_rect(fill = "transparent",colour = NA), plot.title = element_text(hjust = 0.5, size = 12.5))
+     
       
-      # graphics.off()
-      # filename_ = file.path(path, "IC50", paste0(product_id,"_IC50_curve_drug.png"))
-      # png(filename = filename_,width=190,height=190, bg = "transparent")
-      # print(icpl)
-      # dev.off()
+                 
       
-      if(readoutCTX) aes_ <- aes(logconc, inhibition2) else aes_ <- aes(logconc, viability2)
+      # if(readoutCTX) aes_ <- aes(logconc, inhibition2) else aes_ <- aes(logconc, viability2)
       # ecpl <- ggplot2::ggplot(mat_tbl, aes_) + scale_x_continuous(breaks=mat_tbl$logconc,labels=mat_tbl$dose) +
       #   geom_point(color = "blue", size = 2.8) + geom_line(data = data.frame(x = x, y = ytec), aes(x, ytec), color="blue", size = 0.8) +
       #   geom_vline(xintercept = log10(coef_tec50[TEC50]), colour="grey", size = 0.8) + ggtitle(paste0(strtrim(drug_name, 15)," (dss:",dss_score,")\n"))+
