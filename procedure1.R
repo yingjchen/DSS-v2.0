@@ -29,16 +29,21 @@ source('./HelperFunctions.R')
 ###1. calculate the DSS scores (DSS1, DSS2, DSS3) from the cell viability data
 ##load the example data: the cell viability of ~500 drugs were tested in 3 FIMM patient samples
 path_to_exampledata <- './exampleData_procedure1.csv'
-df_dose.responses <- read.csv(path_to_exampledata, header = T,sep = ",",check.names = F)
+df_dose.responses <- read.csv(path_to_exampledata, header = T,sep = ',', check.names = F)
 
 #set the viability argument to ‘FALSE’ if input data is cell growth inhibition data
 df_dose.responses.list <- DOSE_RESPONSE_PROCESS(df_dose.responses, viability = T)
 
 ##compute BREEZE drug sensitivity metrics, i.e. DSS1, DSS2, DSS3, Breeze AUC and relative IC50
-df.metrics <- CALC_METRICS(df_dose.responses.list[[1]], df_dose.responses.list[[2]])
+#set the graph argument to 'TRUE' to generate the fitted dose-response curves (inhibition vs dose) under the directory ~/IC50/; the graph argument initialized with a default value: FALSE
+df.metrics <- CALC_METRICS(df_dose.responses.list[[1]], df_dose.responses.list[[2]], graph = FALSE)
 
 ##here we select DSS2 as patient DSS
 patients.dss <- as.data.frame(acast(df.metrics,df.metrics$Patient.num ~ df.metrics$drug , value.var  = 'DSS2'))
+#plot a heatmap showing DSS2 of the drugs with highest standard deviations across the samples;
+#The argument proportion can be adjusted to specify the proportion of most variable drugs (e.g. 10% drugs selected with the code provided below);
+#the graph argument initialized with a default value: 1
+HEATMAP_SD(patients.dss, proportion = 0.1)
 
 ##save DSS scores and other metrics
 #write.table(df.metrics, file = './Results_exampleData_procedure1.csv',sep = ',',append=F,row.names = F,col.names = T)
@@ -81,15 +86,9 @@ write.table(patients.zdss, file = './Results_exampledata_zDSS_procedure1.txt',se
 write.table(patients.rdss, file = './Results_exampledata_rDSS_procedure1.txt',sep = '\t',append=F,row.names = T,col.names = T)
 
 
-###5. Plotting the drug response distributions (optional)
+###5.1. Plotting the drug response distributions, combined plot (optional)
 sample_id <- 'AML_013_01'
-sample_dss <- SAMPLE_DSS_CONCAT(sample_id = sample_id)
-p1 <- ggplot(sample_dss) +  
-  geom_histogram(aes(x = DSS, y = after_stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
-  labs(title = sample_id,  x="DSS", y = "Density") + theme_classic()
-p2 <- ggplot(sample_dss, aes(x = drugclass, y = DSS, fill= drugclass)) +
-  geom_boxplot(aes(x = drugclass, y = DSS, fill = drugclass), outlier.shape = NA, alpha = .6,  colour = "black", show.legend = F) +
-  geom_jitter(aes(color = drugclass), size = 3, alpha = .8,  show.legend = F)+
-  theme_classic() + coord_flip()
-p3 <- ggarrange(p1, p2, nrow = 2)
-ggsave("./example_DSS_distribution.pdf", p3, height = 10,width = 10)
+sample_dss <- SAMPLE_DSS_CONCAT(patients.dss, patients.sdss, patients.zdss, patients.rdss, sample_id = sample_id)
+CHEMO_TAREGTED_PLOT(sample_dss, metric = 'DSS')
+###5.2. Plotting the drug response distributions, density plot(optional)
+SELECTIVE_SCORE_PLOT(sample_dss)
