@@ -1,7 +1,7 @@
 
 DOSE_RESPONSE_PROCESS <- function(dose_responses, viability = T){
   colnames(dose_responses) <- c('drug', 'Concentration','Patient.num' ,'response.raw')
-  dose_responses$ID <- paste0(dose_responses$drug,"_Patient ", dose_responses$Patient.num)
+  dose_responses$ID <- paste0(dose_responses$drug, "_", dose_responses$Patient.num)
   if (viability){
     dose_responses$inhibition_percent <- 100 - dose_responses$response.raw*100
     
