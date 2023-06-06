@@ -76,6 +76,7 @@ SAMPLE_DSS_CONCAT <- function(df.dss, df.sdss, df.zdss, df.rdss, sample_id){
 
 
 HEATMAP_SD <- function(df, proportion = 1){
+  #limition on the value of proportion
   if (dim(df)[1] > 1 & dim(df)[2] > 1){
     # we need at least two rows/columns for clustering
     drug_variable <- order(-colSds(as.matrix(df)))[1 : ceiling(ncol(df)*proportion)]
