@@ -28,28 +28,26 @@ unzip('DSS-v2.0-main.zip')
 setwd(dir = file.path(path_to_working_directory, 'DSS-v2.0-main'))
 ##########Download the github repo and set the working directory, if needed##########
 
-
+source('./HelperFunctions.R')
 path_to_exampledata <- './exampleData_procedure2.csv'
 df.dss <- read.csv(path_to_exampledata, header = T,sep = ",",  row.names = 1, check.names = F)
 
-##make PPCA plot of DSS
+##check missing values and make PCA/PPCA plot of DSS
 df.dss.1 <- df.dss[, 1 : (ncol(df.dss) - 3)]
-res_ppca <- pca(data.matrix(df.dss.1), method = 'ppca', nPcs = 2, seed = 1)
-score_ppca <-  as.data.frame(scores(res_ppca))
-score_ppca$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
-ggplot(score_ppca, aes(x = PC1, y = PC2, color = group)) +
+score_pca <- PCA_FUNC(df.dss.1)
+score_pca$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
+ggplot(score_pca, aes(x = PC1, y = PC2, color = group)) +
   geom_point() + labs(title = "DSS",  x = "PC1", y = "PC2") +
   theme_classic()
-ggsave("./example_DSS_ppca.pdf", height = 10, width = 10)
+ggsave("./example_DSS_pca.pdf", height = 10, width = 10)
 
-##perform ComBat correction  
+##perform ComBat correction, non-parametric adjustment used
 start.time <- Sys.time()
 df.dss.combat <- ComBat(dat = t(df.dss.1), batch = as.factor(df.dss$cohort), mod = NULL, par.prior = F, prior.plots = F)
 message("Finished ComBat correction in ", round(Sys.time() - start.time, 2), units(Sys.time() - start.time))
 
-##make PPCA plot of ComBat DSS
-res_ppca_combat <- pca(data.matrix(t(df.dss.combat)), method = 'ppca', nPcs = 2, seed = 1)
-score_ppca_combat <-  as.data.frame(scores(res_ppca_combat))
+##make PCA/PPCA plot of ComBat DSS
+score_pca_combat <- PCA_FUNC(t(df.dss.combat))
 score_ppca_combat$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
 ggplot(score_ppca_combat, aes(x = PC1, y = PC2, color = group)) +
   geom_point() + labs(title = "ComBat DSS",  x = "PC1", y = "PC2") +
