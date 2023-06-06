@@ -24,6 +24,8 @@ CALC_METRICS <- function(dose_responses, dose_responses_grouped, graph = F){
   list.AUC_DSS <- list()
   list.believe <- list()
   list.IC50 <- list()
+  unlink("./IC50", recursive = T) ;dir.create("./IC50")
+  
   for(it in 1:iter){
     df.DSS.ctx <- CALC_IC50_EC50_DSS(it, dose_responses_grouped, dose_responses, DSS_typ = '2', graph = graph)
     list.believe[[it]] <- data.frame(believe_DSS = df.DSS.ctx[[3]])
