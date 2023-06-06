@@ -53,11 +53,6 @@ HEATMAP_SD(patients.dss, proportion = 0.1)
 path_to_controldss <- './controls/File_1_Drugname_response_DSS_10Healthy.txt'
 controls.dss <- read.csv(path_to_controldss, header = T, sep = '\t', row.names = 1,stringsAsFactors = F, check.names = F)
 
-##compute mean, SD, median and MAD of control DSSs
-controls.summary <- as.data.frame(rbind(colMeans(as.matrix(controls.dss)),colSds(as.matrix(controls.dss)),colMedians(as.matrix(controls.dss)), colMads(as.matrix(controls.dss))))
-rownames(controls.summary ) <- c('mean', 'sd', 'median', 'mad')
-
-
 
 ###3.search the drugs of interest from the drug library (527 drugs) 
 ##3.1 map the drugs with drug synonyms
@@ -69,13 +64,17 @@ patients.dss <- DRUG_FILTER_SYNONYMS(patients.dss, df_drug.library)
 
 
 ###4. compute patient sDSS, zDSS and rDSS
-##4.1 compute patient sDSS
+##4.1 compute mean, SD, median and MAD of control DSSs
+controls.summary <- as.data.frame(rbind(colMeans(as.matrix(controls.dss)),colSds(as.matrix(controls.dss)),colMedians(as.matrix(controls.dss)), colMads(as.matrix(controls.dss))))
+rownames(controls.summary ) <- c('mean', 'sd', 'median', 'mad')
+
+##4.2 compute patient sDSS
 patients.sdss <- patients.dss - slice(controls.summary['mean', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss)))
 
-##4.2 compute patient zDSS
+##4.3 compute patient zDSS
 patients.zdss <- (patients.dss - slice(controls.summary['mean', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss))))/(slice(controls.summary['sd', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss))) + 1)
 
-##4.3 compute patient rDSS
+##4.4 compute patient rDSS
 patients.rdss <- (patients.dss - slice(controls.summary['median', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss))))/(slice(controls.summary['mad', colnames(patients.dss)],rep(1:n(), each = nrow(patients.dss))) + 1)
 
 
