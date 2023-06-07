@@ -76,7 +76,7 @@ SAMPLE_DSS_CONCAT <- function(df.dss, df.sdss, df.zdss, df.rdss, sample_id){
 
 
 HEATMAP_SD <- function(df, proportion = 1){ 
-  if (proportion <= 0 | proportion > 1){
+  if (proportion <= 0 | proportion > 1 | !is.numeric(proportion)){
     stop("The value of the argument proportion should be larger than 0 and no larger than 1")
   }
   
@@ -149,7 +149,7 @@ CHEMO_TAREGTED_PLOT <- function(df, metric){
     ggsave("./example_rDSS_distribution.pdf", p3, height = 10, width = 10)
     message("Finished data distribution plots of rDSS in chemo and targeted drugs")
   }else{
-    stop("The argument metric shoud be one of 'DSS', 'sDSS', 'zDSS', 'rDSS'")
+    stop("The argument metric should be one of 'DSS', 'sDSS', 'zDSS', 'rDSS'")
   }
 }
 
