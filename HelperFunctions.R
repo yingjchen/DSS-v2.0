@@ -149,7 +149,7 @@ CHEMO_TAREGTED_PLOT <- function(df, metric){
     ggsave("./example_rDSS_distribution.pdf", p3, height = 10, width = 10)
     message("Finished data distribution plots of rDSS in chemo and targeted drugs")
   }else{
-    stop("The argument metric should be one of 'DSS', 'sDSS', 'zDSS', 'rDSS'")
+    stop("The argument metric should be one of 'DSS', 'sDSS', 'zDSS', or 'rDSS'")
   }
 }
 
