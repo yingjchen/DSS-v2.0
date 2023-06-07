@@ -158,7 +158,15 @@ CHEMO_TAREGTED_PLOT <- function(df, metric, filename = ""){
   message("Finished data distribution plots of ", metric, " in chemo and targeted drugs")
 }
 
-
+SELECTIVE_SCORE_PLOT <- function(df, filename = ""){
+  df_new <- data.frame(score = c(df$DSS, df$sDSS, df$zDSS, df$rDSS ), class = factor(rep(c('DSS', 'sDSS','zDSS', 'rDSS' ), c(nrow(df), nrow(df), nrow(df), nrow(df))), levels = c('DSS', 'sDSS','zDSS', 'rDSS' )))
+  p1 <- ggplot(df_new) + 
+    geom_density(aes(x = score, fill = class), alpha = 0.3, lwd = 1, bw = 2,  show.legend = T) +
+    labs(title = sample_id,  x="", y = "Density") + theme_classic()
+  if (filename == "") {ggsave("./example_scores_distribution.pdf", p1, height = 10, width = 10)}else
+  {ggsave(filename, p1, height = 10, width = 10)}
+  message("Finished data distribution plots of DSS, sDSS, zDSS and rDSS in one sample")
+}
   
 PCA_FUNC <- function(df){
   if (sum(is.na(df)) > 0){
