@@ -85,13 +85,13 @@ HEATMAP_SD <- function(df, proportion = 1, filename = ""){
     # we need at least two rows/columns for clustering
     drug_variable <- order(-colSds(as.matrix(df)))[1 : ceiling(ncol(df)*proportion)]
     p0 <- pheatmap(df[, drug_variable],  show_colnames = T, show_rownames = T,  clustering_distance_cols = "minkowski")
-    if (filename == "") {ggsave(paste0("./example_Breeze_DSS_", ceiling(ncol(df)*proportion), "drugs_heatmap.pdf"), p0, height = 10,width = 10)}else
+    if (filename == "") {ggsave(paste0("./step8_example_Breeze_DSS_", ceiling(ncol(df)*proportion), "drugs_heatmap.pdf"), p0, height = 10,width = 10)}else
     {ggsave(filename, p0, height = 10,width = 10)}
     message("Finished heatmap for DSS of ", ceiling(ncol(df)*proportion), " most variable drugs across ", nrow(df)," samples")
     
   }else if (nrow(df) != 1 & nrow(df) != 1 & ceiling(ncol(df)*proportion) == 1){
     p0 <- pheatmap(df,  show_colnames = T, show_rownames = T,  clustering_distance_cols = "minkowski")
-    if (filename == "") {ggsave(paste0("./example_Breeze_DSS_", ncol(df), "drugs_heatmap.pdf"), p0, height = 10,width = 10)}else
+    if (filename == "") {ggsave(paste0("./step8_example_Breeze_DSS_", ncol(df), "drugs_heatmap.pdf"), p0, height = 10,width = 10)}else
     {ggsave(filename, p0, height = 10,width = 10)}
     message("Finished heatmap for DSS of ", ncol(df), " drugs across ", nrow(df)," samples")
     
@@ -102,7 +102,7 @@ HEATMAP_SD <- function(df, proportion = 1, filename = ""){
     p0 <- ggplot(df_order) + geom_bar(aes(y = DSS, x = ID, fill = 'red'), stat = "identity", show.legend = F)  +
       labs(title = "",  x = "", y = "DSS") + scale_x_discrete(limits = df_order$ID) + theme_classic()
     
-    if (filename == "") {ggsave("./example_Breeze_DSS_barplot.pdf", p0, height = 10, width = 10)}else
+    if (filename == "") {ggsave("./step8_example_Breeze_DSS_barplot.pdf", p0, height = 10, width = 10)}else
     {ggsave(filename, p0, height = 10, width = 10)}
     message("Finished bar plot for DSS of ", nrow(df), " drugs across ", ncol(df)," samples")
   }
@@ -153,7 +153,7 @@ CHEMO_TAREGTED_PLOT <- function(df, metric, filename = ""){
   }else{
     stop("The argument metric should be one of 'DSS', 'sDSS', 'zDSS', or 'rDSS'")
   }
-  if (filename == "") {ggsave(paste0("./example_", metric, "_distribution.pdf"), p3, height = 10, width = 10)}else
+  if (filename == "") {ggsave(paste0("./step13_chemo_taregted_example_", metric, "_distribution.pdf"), p3, height = 10, width = 10)}else
   {ggsave(filename, p3, height = 10, width = 10)}
   message("Finished data distribution plots of ", metric, " in chemo and targeted drugs")
 }
@@ -163,7 +163,7 @@ SELECTIVE_SCORE_PLOT <- function(df, filename = ""){
   p1 <- ggplot(df_new) + 
     geom_density(aes(x = score, fill = class), alpha = 0.3, lwd = 1, bw = 2,  show.legend = T) +
     labs(title = sample_id,  x="", y = "Density") + theme_classic()
-  if (filename == "") {ggsave("./example_scores_distribution.pdf", p1, height = 10, width = 10)}else
+  if (filename == "") {ggsave("./step13_density_example_scores_distribution.pdf", p1, height = 10, width = 10)}else
   {ggsave(filename, p1, height = 10, width = 10)}
   message("Finished data distribution plots of DSS, sDSS, zDSS and rDSS in one sample")
 }
