@@ -98,13 +98,13 @@ patients.rdss <- (patients.dss - slice(controls.summary['median', colnames(patie
 To combine drug response profiles from multiple sources, we apply the ComBat algorithm to adjust for the known batch effects. 
 
 ```r
-# load the example data: DSS2 proiles for 147 BeatAML samples, 125 FIMM-AML samples and 10 healthy controls. 
+# load the example data: DSS2 proiles for 147 BeatAML samples, 125 FIMM-AML samples and 10 healthy controls
 df.dss <- read.csv('./exampledata_procedure2.csv', header = T,sep = ',',  row.names = 1, check.names = F)
 ```
 One can visualize a PCA or Probabilistic PCA (PPCA) plot showing 
 the batch effects due to the presence of missing data.
 ```r
-# The example DSS2 profiles contain missing values, use PPCA to check potential batch effects
+# The example DSS2 profiles contain missing data, use PPCA to check potential batch effects.
 df.dss.1 <- df.dss[, 1 : (ncol(df.dss) - 3)]
 score_pca <- PCA_FUNC(df.dss.1)
 score_pca$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
