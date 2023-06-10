@@ -35,14 +35,14 @@ df_dose.responses <- read.csv(path_to_exampledata, header = T,sep = ',', check.n
 df_dose.responses.list <- DOSE_RESPONSE_PROCESS(df_dose.responses, viability = T)
 
 ##compute BREEZE drug sensitivity metrics, i.e. DSS1, DSS2, DSS3, Breeze AUC and relative IC50
-#set the graph argument to 'TRUE' to generate the fitted dose-response curves (inhibition vs dose) under the directory ~/IC50/; the graph argument initialized with a default value: FALSE
+#set the argument graph to 'TRUE' to generate the fitted dose-response curves (inhibition vs dose) under the directory ~/IC50/; the argument graph initialized with a default value: FALSE
 df.metrics <- CALC_METRICS(df_dose.responses.list[[1]], df_dose.responses.list[[2]], graph = FALSE)
 
 ##here we select DSS2 as patient DSS
 patients.dss <- as.data.frame(acast(df.metrics,df.metrics$Patient.num ~ df.metrics$drug , value.var  = 'DSS2'))
 #plot a heatmap showing DSS2 of the drugs with highest standard deviations across the samples;
-#The argument proportion can be adjusted to specify the proportion of most variable drugs (e.g. 10% drugs selected with the code provided below);
-#the graph argument initialized with a default value: 1
+#the argument proportion can be adjusted to specify the proportion of most variable drugs (e.g. 10% drugs selected with the code provided below);
+#the argument proportion initialized with a default value: 1
 HEATMAP_SD(patients.dss, proportion = 0.1)
 
 ##save DSS scores and other metrics
@@ -85,9 +85,9 @@ write.table(patients.zdss, file = './Results_exampledata_zDSS_procedure1.txt',se
 write.table(patients.rdss, file = './Results_exampledata_rDSS_procedure1.txt',sep = '\t',append=F,row.names = T,col.names = T)
 
 
-###5.1. Plotting the drug response distributions, combined plot (optional)
+###5.1. Plotting the drug response distributions, combined plots
 sample_id <- 'AML_013_01'
 sample_dss <- SAMPLE_DSS_CONCAT(patients.dss, patients.sdss, patients.zdss, patients.rdss, sample_id = sample_id)
 CHEMO_TAREGTED_PLOT(sample_dss, metric = 'DSS')
-###5.2. Plotting the drug response distributions, density plot(optional)
+###5.2. Plotting the drug response distributions, density plots
 SELECTIVE_SCORE_PLOT(sample_dss)
