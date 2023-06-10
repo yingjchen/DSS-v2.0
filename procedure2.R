@@ -1,7 +1,7 @@
 ###batch effect correction and heatmap visualization
 
 ##define the required packages 
-packages.required <- packages.required <- c("matrixStats","dplyr", "ggplot2", "data.table", "BiocManager", "pheatmap")
+packages.required <- packages.required <- c("matrixStats","dplyr", "ggplot2", "data.table", "BiocManager", "pheatmap", "scales")
 packages.bio <- c("sva", "pcaMethods")
 
 
@@ -39,7 +39,7 @@ score_pca$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
 ggplot(score_pca, aes(x = PC1, y = PC2, color = group)) +
   geom_point() + labs(title = "DSS",  x = "PC1", y = "PC2") +
   theme_classic()
-ggsave("./example_DSS_pca.pdf", height = 10, width = 10)
+ggsave("./example_DSS_ppca.pdf", height = 10, width = 10)
 
 ##perform ComBat correction, non-parametric adjustment used
 start.time <- Sys.time()
@@ -66,7 +66,7 @@ ggsave("./example_DSS_heatmap.pdf", p1, height = 10,width = 10)
 
 ##make heatmap of ComBat DSS
 df.dss.3 <- as.data.frame(t(df.dss.combat)[df.dss$status != 'controls', ])
-p2 <- pheatmap(t(df.dss.3), annotation_col = r_, show_colnames = F, show_rownames = F, clustering_distance_cols = "minkowski")
+p2 <- pheatmap(rescale(t(df.dss.3), c(0, 50)), annotation_col = r_, show_colnames = F, show_rownames = F, clustering_distance_cols = "minkowski")
 ggsave("./example_ComBat_DSS_heatmap.pdf", p2, height = 10,width = 10)
 
 ##calculate ComBat rDSS
