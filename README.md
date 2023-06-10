@@ -39,7 +39,7 @@ source('./HelperFunctions.R')
 
 ```r
 # load the ex vivo dose-response profiles (cell viability at five drug concentrations)
-df_dose.responses <- read.csv('./exampleData_procedure1.csv', header = T,sep = ",",check.names = F)
+df_dose.responses <- read.csv('./exampleData_procedure1.csv', header = T,sep = ',',check.names = F)
 
 head(df_dose.responses)
 ```
@@ -99,7 +99,7 @@ To combine drug response profiles from multiple sources, we apply the ComBat alg
 
 ```r
 # load the example data: DSS2 proiles for 147 BeatAML samples, 125 FIMM-AML samples and 10 healthy controls. 
-df.dss <- read.csv('./exampledata_procedure2.csv', header = T,sep = ",",  row.names = 1, check.names = F)
+df.dss <- read.csv('./exampledata_procedure2.csv', header = T,sep = ',',  row.names = 1, check.names = F)
 ```
 One can visualize a PCA or Probabilistic PCA (PPCA) plot showing 
 the batch effects due to the presence of missing data.
