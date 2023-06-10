@@ -39,7 +39,7 @@ score_pca$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
 ggplot(score_pca, aes(x = PC1, y = PC2, color = group)) +
   geom_point() + labs(title = "DSS",  x = "PC1", y = "PC2") +
   theme_classic()
-ggsave("./example_DSS_ppca.pdf", height = 10, width = 10)
+ggsave("./procedure2_DSS_ppca.pdf", height = 10, width = 10)
 
 ##perform ComBat correction, non-parametric adjustment used
 start.time <- Sys.time()
@@ -52,7 +52,7 @@ score_pca_combat$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
 ggplot(score_pca_combat, aes(x = PC1, y = PC2, color = group)) +
   geom_point() + labs(title = "ComBat DSS",  x = "PC1", y = "PC2") +
   theme_classic()
-ggsave("./example_ComBat_DSS_ppca.pdf", height = 10, width = 10)
+ggsave("./procedure2_ComBat_DSS_ppca.pdf", height = 10, width = 10)
 
 ###Heatmap visualization
 df.dss.2 <- as.data.frame(df.dss[df.dss$status != 'controls', ])
@@ -62,12 +62,12 @@ rownames(r_) <- rownames(df.dss.2)
 
 ##make heatmap of DSS
 p1 <- pheatmap(t(df.dss.2[, 1:(ncol(df.dss.2) - 4)]), annotation_col = r_, show_colnames = F, show_rownames = F, clustering_distance_cols = "minkowski")
-ggsave("./example_DSS_heatmap.pdf", p1, height = 10,width = 10)
+ggsave("./procedure2_DSS_heatmap.pdf", p1, height = 10,width = 10)
 
 ##make heatmap of ComBat DSS
 df.dss.3 <- as.data.frame(t(df.dss.combat)[df.dss$status != 'controls', ])
 p2 <- pheatmap(rescale(t(df.dss.3), c(0, 50)), annotation_col = r_, show_colnames = F, show_rownames = F, clustering_distance_cols = "minkowski")
-ggsave("./example_ComBat_DSS_heatmap.pdf", p2, height = 10,width = 10)
+ggsave("./procedure2_ComBat_DSS_heatmap.pdf", p2, height = 10,width = 10)
 
 ##calculate ComBat rDSS
 controls.dss <- t(df.dss.combat)[df.dss$status == 'controls', ]
@@ -77,4 +77,4 @@ patients.rdss <- (df.dss.3 - slice(controls.summary['median', colnames(df.dss.3)
 
 ##make heatmap of ComBat rDSS
 p3 <- pheatmap(t(patients.rdss), annotation_col = r_, show_colnames = F, show_rownames = F, clustering_distance_cols = "minkowski")
-ggsave("./example_ComBat_rDSS_heatmap.pdf", p3, height = 10,width = 10)
+ggsave("./procedure2_ComBat_rDSS_heatmap.pdf", p3, height = 10,width = 10)
