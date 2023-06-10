@@ -55,10 +55,10 @@ head(df_dose.responses)
 
 ```r
 # calculate the percentage of growth inhibition 
-df_dose.responses.list <- DOSE_RESPONSE_PROCESS(df_dose.responses, viability = T)
+df_dose.responses.list <- DOSE_RESPONSE_PROCESS(df_dose.responses, viability = TRUE)
 
 # calculate DSS metrics (DSS1, DSS2, DSS3), AUC and relative IC50
-df.metrics <- CALC_METRICS(df_dose.responses.list[[1]], df_dose.responses.list[[2]])
+df.metrics <- CALC_METRICS(df_dose.responses.list[[1]], df_dose.responses.list[[2]], graph = FALSE)
 ```
 
 ## Import the control sample DSS profiles
@@ -101,15 +101,15 @@ To combine drug response profiles from multiple sources, we apply the ComBat alg
 # load the example data: DSS2 proiles for 147 BeatAML samples, 125 FIMM-AML samples and 10 healthy controls. 
 df.dss <- read.csv('./exampledata_procedure2.csv', header = T,sep = ",",  row.names = 1, check.names = F)
 ```
-One can visualize a Probabilistic PCA (PPCA) plot showing 
+One can visualize a PCA or Probabilistic PCA (PPCA) plot showing 
 the batch effects due to the presence of missing data.
 ```r
+# The example DSS2 profiles contain missing values, use PPCA to check potential batch effects
 df.dss.1 <- df.dss[, 1 : (ncol(df.dss) - 3)]
-res_ppca <- pca(data.matrix(df.dss.1), method = 'ppca', nPcs = 2, seed = 1)
-score_ppca <-  as.data.frame(scores(res_ppca))
-score_ppca$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
+score_pca <- PCA_FUNC(df.dss.1)
+score_pca$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
 
-ggplot(score_ppca, aes(x = PC1, y = PC2, color = group)) +
+ggplot(score_pca, aes(x = PC1, y = PC2, color = group)) +
   geom_point() + labs(title = "DSS",  x = "PC1", y = "PC2") +
   theme_classic()
 ```
@@ -124,11 +124,10 @@ df.dss.combat <- ComBat(dat = t(df.dss.1), batch = as.factor(df.dss$cohort), mod
 
 PPCA of ComBat-corrected DSS profiles
 ```r
-res_ppca_combat <- pca(data.matrix(t(df.dss.combat)), method = 'ppca', nPcs = 2, seed = 1)
-score_ppca_combat <-  as.data.frame(scores(res_ppca_combat))
-score_ppca_combat$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
+score_pca_combat <- PCA_FUNC(t(df.dss.combat))
+score_pca_combat$group <- paste(df.dss$cohort,  df.dss$status,  sep = ' ')
 
-ggplot(score_ppca_combat, aes(x = PC1, y = PC2, color = group)) +
+ggplot(score_pca_combat, aes(x = PC1, y = PC2, color = group)) +
   geom_point() + labs(title = "ComBat DSS",  x = "PC1", y = "PC2") +
   theme_classic()
 ```
@@ -138,6 +137,6 @@ ggplot(score_ppca_combat, aes(x = PC1, y = PC2, color = group)) +
 For any questions please contact **Yingjia Chen** (yingjia.chen@helsinki.fi)
 
 # Copyright and license
-Code copyright *Next-generation scoring of selective drug responses for patient-tailored therapy selection*
+Code copyright *Systematic scoring of selective drug responses for patient-tailored therapy selection*
 
 License <https://github.com/yingjchen/DSS-v2.0/blob/main/LICENSE>
