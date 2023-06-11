@@ -113,7 +113,7 @@ HEATMAP_SD <- function(df, proportion = 1, filename = ""){
 CHEMO_TAREGTED_PLOT <- function(df, metric, filename = ""){
   if (metric == 'DSS'){
     p1 <- ggplot(df) +  
-      geom_histogram(aes(x = DSS, y = after_stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
+      geom_histogram(aes(x = DSS, y = stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
       labs(title = sample_id,  x="DSS", y = "Density") + theme_classic()
     p2 <- ggplot(sample_dss, aes(x = drugclass, y = DSS, fill= drugclass)) +
       geom_boxplot(aes(x = drugclass, y = DSS, fill = drugclass), outlier.shape = NA, alpha = .6,  colour = "black", show.legend = F) +
@@ -123,7 +123,7 @@ CHEMO_TAREGTED_PLOT <- function(df, metric, filename = ""){
     
   }else if (metric == 'sDSS'){
     p1 <- ggplot(df) +  
-      geom_histogram(aes(x = sDSS, y = after_stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
+      geom_histogram(aes(x = sDSS, y = stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
       labs(title = sample_id,  x="sDSS", y = "Density") + theme_classic()
     p2 <- ggplot(sample_dss, aes(x = drugclass, y = sDSS, fill= drugclass)) +
       geom_boxplot(aes(x = drugclass, y = sDSS, fill = drugclass), outlier.shape = NA, alpha = .6,  colour = "black", show.legend = F) +
@@ -133,7 +133,7 @@ CHEMO_TAREGTED_PLOT <- function(df, metric, filename = ""){
     
   }else if (metric == 'zDSS'){
     p1 <- ggplot(df) +  
-      geom_histogram(aes(x = zDSS, y = after_stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
+      geom_histogram(aes(x = zDSS, y = stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
       labs(title = sample_id,  x="zDSS", y = "Density") + theme_classic()
     p2 <- ggplot(sample_dss, aes(x = drugclass, y = zDSS, fill= drugclass)) +
       geom_boxplot(aes(x = drugclass, y = zDSS, fill = drugclass), outlier.shape = NA, alpha = .6,  colour = "black", show.legend = F) +
@@ -143,7 +143,7 @@ CHEMO_TAREGTED_PLOT <- function(df, metric, filename = ""){
     
   }else if (metric == 'rDSS'){
     p1 <- ggplot(df) +  
-      geom_histogram(aes(x = rDSS, y = after_stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
+      geom_histogram(aes(x = rDSS, y = stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
       labs(title = sample_id,  x="rDSS", y = "Density") + theme_classic()
     p2 <- ggplot(sample_dss, aes(x = drugclass, y = rDSS, fill= drugclass)) +
       geom_boxplot(aes(x = drugclass, y = rDSS, fill = drugclass), outlier.shape = NA, alpha = .6,  colour = "black", show.legend = F) +
