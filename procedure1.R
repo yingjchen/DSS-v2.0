@@ -36,7 +36,7 @@ df_dose.responses.list <- DOSE_RESPONSE_PROCESS(df_dose.responses, viability = T
 
 ##compute BREEZE drug sensitivity metrics, i.e. DSS1, DSS2, DSS3, Breeze AUC and relative IC50
 #set the argument graph to 'TRUE' to generate the fitted dose-response curves (inhibition vs dose) under the directory ~/IC50/; the argument graph initialized with a default value: FALSE
-df.metrics <- CALC_METRICS(df_dose.responses.list[[1]], df_dose.responses.list[[2]], graph = FALSE)
+df.metrics <- CALC_METRICS(dose_responses = df_dose.responses.list[[1]], dose_responses_grouped = df_dose.responses.list[[2]], graph = FALSE)
 
 ##here we select DSS2 as patient DSS
 patients.dss <- as.data.frame(acast(df.metrics,df.metrics$Patient.num ~ df.metrics$drug , value.var  = 'DSS2'))
