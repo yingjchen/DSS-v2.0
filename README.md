@@ -137,6 +137,6 @@ ggplot(score_pca_combat, aes(x = PC1, y = PC2, color = group)) +
 For any questions please contact **Yingjia Chen** (yingjia.chen@helsinki.fi)
 
 # Copyright and license
-Code copyright *Systematic scoring of selective drug responses for patient-tailored therapy selection*
+Code copyright *Robust scoring of selective drug responses for patient-tailored therapy selection*
 
 License <https://github.com/yingjchen/DSS-v2.0/blob/main/LICENSE>
