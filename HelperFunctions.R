@@ -59,7 +59,7 @@ DRUG_FILTER_SYNONYMS <- function(inputdrug, druglibrary){
   
   inputdrug <- inputdrug[, !(is.na(inputdrug.map['drugname',]))]
   colnames(inputdrug) <- inputdrug.map['drugname',]
-  message("Finished drug mapping in ", round(Sys.time() - start.time, 2), units(Sys.time() - start.time),  paste(', ' ,as.character(ncol(patients.dss)), 'drugs in our compound library') )
+  message("Finished drug mapping in ", round(Sys.time() - start.time, 2), units(Sys.time() - start.time),  paste(', ' ,as.character(ncol(patients.dss)), 'drugs in our drug library') )
   return(inputdrug)
 }
 
@@ -96,7 +96,7 @@ HEATMAP_SD <- function(df, proportion = 1, filename = ""){
     message("Finished heatmap for DSS of ", ncol(df), " drugs across ", nrow(df)," samples")
     
   }else {
-    #bar plot of all the compounds or samples, if there is one compound or one sample
+    #bar plot of all the drugs or samples, if there is one drug or one sample
     if (nrow(df) == 1) df <- as.data.frame(t(df))
     df_order <-  data.frame(DSS = df[ order(as.matrix(df), decreasing=F), ], ID = row.names(df)[order(as.matrix(df), decreasing=F)])
     p0 <- ggplot(df_order) + geom_bar(aes(y = DSS, x = ID, fill = 'red'), stat = "identity", show.legend = F)  +
