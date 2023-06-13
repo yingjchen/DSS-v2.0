@@ -337,10 +337,11 @@ CALC_IC50_EC50_DSS <- compiler::cmpfun(function(i, drug_wells_, xpr_tbl, DSS_typ
         
         
         graphics.off()
-        filename_ = file.path( "IC50", paste0(product_id,"_IC50_curve_drug.png"))
-        png(filename = filename_, width=300,  height=300) #
-        print(icpl)
-        dev.off()
+        filename_ = file.path( "IC50", paste0(product_id,"_IC50_curve_drug.pdf"))
+        ggsave(filename_, icpl, height = 2.5, width = 2.5, bg= 'white', dpi = 200)
+        #png(filename = filename_, width=300,  height=300) #
+        #print(icpl)
+        #dev.off()
         # plot IC50
       } else {
         unlink("./IC50", recursive = T) 
