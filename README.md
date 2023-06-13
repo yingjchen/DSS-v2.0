@@ -2,6 +2,10 @@
 DSS-v2.0 is a computational pipeline for improved quantification of selective drug responses in cells from cancer patients and healthy controls. The standard drug metrics, such as DSS, AUC and IC50 can be computed in the Breeze application (<https://github.com/potdarswapnil/Breeze>). Based on the healthy control responses, the selective DSS (or sDSS) is calculated as difference between the patient DSS and the average of the healthy control responses. Given enough healthy controls, one can estimate the standard deviation of compound-specific reference distribution over the controls using the z-score statistic. Compared with sDSS, calculation of z-score (zDSS) or robust z-score (rDSS) implements not only location normalization for each compound (like sDSS), but also normalizes the patient responses in terms of variability over the control responses (i.e., scale normalization). When combining drug response profiles from different sources, the [ComBat](<https://academic.oup.com/biostatistics/article/8/1/118/252073?login=false>) batch effect correction method should be used when there appear visible batch effects.
 
 
+# Overview of the key steps
+![](./images/workflow.png)
+
+
 # Instructions
 R version 3.5.1 or newer is required.
 
