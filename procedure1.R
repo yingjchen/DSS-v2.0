@@ -88,6 +88,6 @@ write.table(patients.rdss, file = './Results_exampledata_rDSS_procedure1.txt',se
 ###5.1. Plotting the drug response distributions, combined plots
 sample_id <- 'AML_013_01'
 sample_dss <- SAMPLE_DSS_CONCAT(patients.dss, patients.sdss, patients.zdss, patients.rdss, sample_id = sample_id)
-CHEMO_TAREGTED_PLOT(sample_dss, metric = 'DSS')
+CHEMO_TARGETED_PLOT(sample_dss, metric = 'DSS')
 ###5.2. Plotting the drug response distributions, density plots
 SELECTIVE_SCORE_PLOT(sample_dss)
