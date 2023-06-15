@@ -110,7 +110,7 @@ HEATMAP_SD <- function(df, proportion = 1, filename = ""){
 
 
 
-CHEMO_TAREGTED_PLOT <- function(df, metric, filename = ""){
+CHEMO_TARGETED_PLOT <- function(df, metric, filename = ""){
   if (metric == 'DSS'){
     p1 <- ggplot(df) +  
       geom_histogram(aes(x = DSS, y = stat(density), fill= drugclass), binwidth = 1, color = "black", alpha = .6, position="identity", show.legend = T) +
@@ -154,7 +154,7 @@ CHEMO_TAREGTED_PLOT <- function(df, metric, filename = ""){
   }else{
     stop("The argument metric should be one of 'DSS', 'sDSS', 'zDSS', or 'rDSS'")
   }
-  if (filename == "") {ggsave(paste0("./procedure1_step13_chemotherapy_taregted_drugs_", metric, "_distribution.pdf"), p3, height = 10, width = 10)}else
+  if (filename == "") {ggsave(paste0("./procedure1_step13_chemotherapy_targeted_drugs_", metric, "_distribution.pdf"), p3, height = 10, width = 10)}else
   {ggsave(filename, p3, height = 10, width = 10)}
   message("Finished data distribution plots of ", metric, " in chemotherapy and targeted drugs")
 }
