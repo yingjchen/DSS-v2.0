@@ -5,7 +5,7 @@ DSS-v2.0 is a computational pipeline for improved quantification of selective dr
 # Overview of the key steps
 
 <p align = "center">
-    <img src="./images/workflow.png" alt="Workflow..." style="width:75%; height: 75%" height="75%" width="75%"/>
+    <img src="./images/workflow.png" alt="Workflow..." style="width:90%; height: 90%" height="90%" width="90%"/>
 </p>
 
 # Instructions
