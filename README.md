@@ -3,8 +3,10 @@ DSS-v2.0 is a computational pipeline for improved quantification of selective dr
 
 
 # Overview of the key steps
-![](./images/workflow.png)
 
+<p align = "center">
+    <img src="./images/workkflow.png" alt="Workflow..." style="width:75%; height: 75%" height="75%" width="75%"/>
+</p>
 
 # Instructions
 R version 3.5.1 or newer is required.
