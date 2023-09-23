@@ -3,7 +3,7 @@ DSS-v2.0 is a computational pipeline for improved quantification of selective dr
 
 
 # Overview of the key steps
-![](./images/workflow.png)
+
 
 
 # Instructions
