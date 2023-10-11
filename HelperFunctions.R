@@ -164,7 +164,7 @@ SELECTIVE_SCORE_PLOT <- function(df, filename = ""){
   p1 <- ggplot(df_new) + 
     geom_density(aes(x = score, fill = class), alpha = 0.3, lwd = 1, bw = 2,  show.legend = T) +
     labs(title = sample_id,  x="", y = "Density") + theme_classic()
-  if (filename == "") {ggsave("./procedure1_step13_density_distribution_response_scores.pdf", p1, height = 10, width = 10)}else
+  if (filename == "") {ggsave("./procedure1_step14_density_distribution_response_scores.pdf", p1, height = 10, width = 10)}else
   {ggsave(filename, p1, height = 10, width = 10)}
   message("Finished data distribution plots of DSS, sDSS, zDSS and rDSS in one sample")
 }
