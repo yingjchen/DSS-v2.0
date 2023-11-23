@@ -155,4 +155,4 @@ License <https://github.com/yingjchen/DSS-v2.0/blob/main/LICENSE>
 
 # Citation
 If you use this work, please cite the paper [Chen et al. Robust scoring of selective drug responses for patient-tailored therapy selection
-Nature Protocols (2023)] (<https://www.nature.com/articles/s41596-023-00903-x>).
+Nature Protocols (2023)](<https://www.nature.com/articles/s41596-023-00903-x>).
